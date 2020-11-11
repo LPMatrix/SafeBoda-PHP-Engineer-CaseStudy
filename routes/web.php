@@ -13,15 +13,26 @@
 
 use Illuminate\Support\Str;
 
-
 $router->get('/', function () use ($router) {
-    return $router->app->version();
+	    return $router->app->version();
 });
 
-$router->get('/key', function(){
-	return Str::random(32);;
+$router->group(['prefix' => 'api'], function () use ($router) {
+
+	$router->get('/key', function(){
+		return Str::random(32);;
+	});
+
+	$router->post('create_event', 'EventController@store');
+	$router->get('events', 'EventController@index');
+
+	$router->post('generate_coupon', 'CouponController@store');
+	$router->put('update_coupon/{coupon}', 'CouponController@update');
+	$router->post('use_coupon/{coupon}', 'CouponController@use');
+	$router->post('make_coupon_inactive/{coupon}', 'CouponController@make_coupon_inactive');
+	$router->get('coupons', 'CouponController@index');
+	$router->get('active_coupons', 'CouponController@active_coupons');
+
+	$router->get('new_coupon/{event}', 'CouponController@new_coupon');
+
 });
-
-$router->get('generate', 'CouponController@generate');
-
-$router->get('generate/{size}', 'CouponController@generateMany');

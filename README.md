@@ -1,24 +1,20 @@
-# Lumen PHP Framework
+# SaeBoda Coupon code API
 
-[![Build Status](https://travis-ci.org/laravel/lumen-framework.svg)](https://travis-ci.org/laravel/lumen-framework)
-[![Total Downloads](https://poser.pugx.org/laravel/lumen-framework/d/total.svg)](https://packagist.org/packages/laravel/lumen-framework)
-[![Latest Stable Version](https://poser.pugx.org/laravel/lumen-framework/v/stable.svg)](https://packagist.org/packages/laravel/lumen-framework)
-[![License](https://poser.pugx.org/laravel/lumen-framework/license.svg)](https://packagist.org/packages/laravel/lumen-framework)
+SafeBoda wants to give out promo codes worth x amount during events so people can get
+free rides to and from the event. The flaw with that is people can use the promo codes without
+going to the event.
 
-Laravel Lumen is a stunningly fast PHP micro-framework for building web applications with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Lumen attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as routing, database abstraction, queueing, and caching.
+### Task: Implement a Promo code API with the following features.
+* Generation of new promo codes for an event
+* The promo code is worth a specific amount of ride
+* The promo code can expire
+* Can be deactivated
+* Return active promo codes
+* Return all promo codes
+* Only valid when user’s pickup or destination is within x radius of the event venue
+* The promo code radius should be configurable
+* To test the validity of the promo code, expose an endpoint that accepts origin, destination, the promo code.
+* The API should return the promo code details and a polyline using the destination and origin if the promo code is valid and an error otherwise.
 
-## Official Documentation
-
-Documentation for the framework can be found on the [Lumen website](https://lumen.laravel.com/docs).
-
-## Contributing
-
-Thank you for considering contributing to Lumen! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Lumen, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Lumen framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Documentation
+vendor\bin\phpunit tests

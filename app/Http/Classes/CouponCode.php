@@ -1,13 +1,8 @@
 <?php
 namespace App\Http\Classes;
 
-class Coupon
+class CouponCode
 {
-
-    public function __construct()
-    {
-        //
-    }
 
     public function generateCouponString($length) {
         $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
