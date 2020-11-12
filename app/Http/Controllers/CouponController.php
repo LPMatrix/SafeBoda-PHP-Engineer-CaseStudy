@@ -66,4 +66,10 @@ class CouponController extends Controller
 
         return response()->json(['data'=>$coupon, 'deactivated'=>true], 200);
     }
+
+    public function update(Request $request){
+        $coupon = Coupon::findOrFail($request->id);
+        $coupon->update(['radius'=>$request->radius]);
+        return response()->json(['data'=>$coupon, 'updated'=>true], 200);
+    }
 }

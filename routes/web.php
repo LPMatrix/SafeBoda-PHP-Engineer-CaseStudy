@@ -27,11 +27,11 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 	$router->get('events', 'EventController@index');
 
 	$router->post('generate_coupon', 'CouponController@store');
-	$router->put('update_coupon/{coupon}', 'CouponController@update');
-	$router->put('use_coupon/{coupon}', 'CouponController@use');
-	$router->put('deactivate_coupon/{coupon}', 'CouponController@deactivate_coupon');
 	$router->get('coupons', 'CouponController@index');
 	$router->get('active_coupons', 'CouponController@active_coupons');
+	$router->post('update_coupon', 'CouponController@update');
+	$router->put('use_coupon/{coupon}', 'CouponController@use');
+	$router->put('deactivate_coupon/{coupon}', 'CouponController@deactivate_coupon');
 
 	$router->get('new_coupon/{event}', 'CouponController@new_coupon');
 

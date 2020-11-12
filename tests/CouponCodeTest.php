@@ -5,9 +5,11 @@ use App\Coupon;
 use App\Event;
 
 class CouponCodeTest extends TestCase
-{
+{   
+    // delete the data created during a test from the databse after every test run
     use DatabaseTransactions;
 
+    // test if an event can be created
     public function testCanCreateEvent()
     {
         $data = factory(Event::class)->make()->toArray();
@@ -17,6 +19,7 @@ class CouponCodeTest extends TestCase
         ])->assertResponseStatus(201);
     }
 
+    // test if events can be listed
     public function testListEvent()
     {
         $data = factory(Event::class)->make()->toArray();
@@ -27,6 +30,7 @@ class CouponCodeTest extends TestCase
 
     }
     
+    // test if coupon can be created
     public function testCanCreateCoupon()
     {
         $data = factory(Coupon::class)->make()->toArray();
@@ -36,6 +40,7 @@ class CouponCodeTest extends TestCase
         ])->assertResponseStatus(201);
     }
 
+    // test if all coupons can be listed
     public function testListCoupon()
     {
         $data = factory(Coupon::class)->make()->toArray();
@@ -46,9 +51,9 @@ class CouponCodeTest extends TestCase
 
     }
 
+    // test if only active coupons can be listed
     public function testListActiveCoupon()
     {
-        $data = factory(Coupon::class, 10)->make()->toArray();
         $couponModel = new Coupon;
         $activeCoupons = $couponModel->active()->get()->toArray();
         $this->json('GET', 'api/active_coupons')->seeJson([
@@ -57,20 +62,30 @@ class CouponCodeTest extends TestCase
 
     }
 
+    // test if a coupon can be used
     public function testCanUseCoupon(){
         $data = factory(Coupon::class)->create();
-        // dd($data);
         $this->json('PUT', 'api/use_coupon/'.$data->id)->seeJson([
             'used' => true
         ])->assertResponseStatus(200);
     }
 
+    // test if a coupon can be deactivated
     public function testCanDeactivateCoupon()
     {
         $data = factory(Coupon::class)->create();
-        // dd($data);
         $this->json('PUT', 'api/deactivate_coupon/'.$data->id)->seeJson([
             'deactivated' => true
+        ])->assertResponseStatus(200);
+
+    }
+
+    // test if coupon radius can be updated
+    public function testCanUpdateCouponRadius()
+    {
+        $data = factory(Coupon::class)->create()->toArray();
+        $this->json('POST', 'api/update_coupon/', $data)->seeJson([
+            'updated' => true
         ])->assertResponseStatus(200);
 
     }

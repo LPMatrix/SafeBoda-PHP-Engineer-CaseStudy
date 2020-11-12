@@ -1,4 +1,4 @@
-# SaeBoda Coupon code API
+# SaeBoda Coupon Code API
 
 SafeBoda wants to give out promo codes worth x amount during events so people can get
 free rides to and from the event. The flaw with that is people can use the promo codes without
@@ -16,5 +16,92 @@ going to the event.
 * To test the validity of the promo code, expose an endpoint that accepts origin, destination, the promo code.
 * The API should return the promo code details and a polyline using the destination and origin if the promo code is valid and an error otherwise.
 
-## Documentation
-vendor\bin\phpunit tests
+## Installation
+Git clone this repo
+
+```bash
+git clone https://github.com/LPMatrix/SafeBoda-PHP-Engineer-CaseStudy.git
+````
+
+### Install needed libraries via composer:
+
+```bash
+composer install
+```
+
+### Serving the API
+
+```php
+php -S localhost:8000 -t public
+```
+
+## Testing
+Run this to run the tests for the API:
+
+```bash
+vendor\\bin\\phpunit tests
+```
+
+## Usage
+
+### Create an event
+
+``` curl
+curl -X POST \
+  http://localhost:8000/api/create_event \
+  -H 'Content-Type: application/json' \
+  -d '{
+        "name": "DSN Bootcamp",
+        "latitude": "63.140778",
+        "longitude": "-64.759483",
+    }'
+```
+
+### Get all events
+
+``` curl
+curl -X GET http://localhost:8000/api/events
+```
+
+### Generate a coupon
+
+``` curl
+curl -X POST \
+  http://localhost:8000/api/events \
+  -H 'Content-Type: application/json' \
+  -d '{
+        "code": "FK87HW",
+        "event_id": "2",
+        "radius": "64",
+        "expires_at": "2020-12-02 00:00:00",
+        "amount": "2400",
+    }'
+```
+
+### Get all coupons
+
+``` curl
+curl -X GET http://localhost:8000/api/coupons
+```
+
+### Get active coupons
+
+``` curl
+curl -X GET http://localhost:8000/api/active_coupons
+```
+
+### Update a coupon's radius
+
+``` curl
+curl -X POST \
+  http://localhost:8000/api/update_coupon \
+  -H 'Content-Type: application/json' \
+  -d '{
+        "id": "1",
+        "radius": "74",
+    }'
+```
+
+### Use a coupon
+
+### Deactivate a coupon
