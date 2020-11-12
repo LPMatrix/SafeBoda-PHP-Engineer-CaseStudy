@@ -39,7 +39,7 @@ class CouponController extends Controller
             'expires_at' => $request->expires_at,
         ]);
 
-        return response()->json(['data'=>$couponCode, 'created'=>true], 201);
+        return response()->json(['data'=>$couponCode, 'status'=>true], 201);
     }
 
     public function index(){
@@ -57,19 +57,19 @@ class CouponController extends Controller
         $coupon = Coupon::findOrFail($coupon);
         $coupon->update(['used'=>'1']);
 
-        return response()->json(['data'=>$coupon, 'used'=>true], 200);
+        return response()->json(['data'=>$coupon, 'status'=>true], 200);
     }
 
     public function deactivate_coupon($coupon){
         $coupon = Coupon::findOrFail($coupon);
         $coupon->update(['active'=>'0']);
 
-        return response()->json(['data'=>$coupon, 'deactivated'=>true], 200);
+        return response()->json(['data'=>$coupon, 'status'=>true], 200);
     }
 
-    public function update(Request $request){
-        $coupon = Coupon::findOrFail($request->id);
+    public function update(Request $request, $coupon){
+        $coupon = Coupon::findOrFail($coupon);
         $coupon->update(['radius'=>$request->radius]);
-        return response()->json(['data'=>$coupon, 'updated'=>true], 200);
+        return response()->json(['data'=>$coupon, 'status'=>true], 200);
     }
 }

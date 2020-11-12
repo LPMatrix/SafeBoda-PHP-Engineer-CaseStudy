@@ -36,7 +36,7 @@ class EventController extends Controller
         
         if($validator->fails()) {
             return response()
-                    ->json(['errors' => $validator->errors(), 'created' => false], 400);
+                    ->json(['errors' => $validator->errors(), 'status' => false], 400);
         } 
 
         $eventModel = new Event;
@@ -46,7 +46,7 @@ class EventController extends Controller
             'latitude' => $request->latitude,
         ]);
 
-        return response()->json(['data'=>$event, 'created'=>true], 201);
+        return response()->json(['data'=>$event, 'status'=>true], 201);
     }
 
     public function index(){

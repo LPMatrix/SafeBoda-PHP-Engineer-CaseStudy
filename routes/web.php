@@ -23,16 +23,14 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 		return Str::random(32);;
 	});
 
-	$router->post('create_event', 'EventController@store');
-	$router->get('events', 'EventController@index');
+	$router->post('event/create_event', 'EventController@store');
+	$router->get('event/events', 'EventController@index');
 
-	$router->post('generate_coupon', 'CouponController@store');
-	$router->get('coupons', 'CouponController@index');
-	$router->get('active_coupons', 'CouponController@active_coupons');
-	$router->post('update_coupon', 'CouponController@update');
-	$router->put('use_coupon/{coupon}', 'CouponController@use');
-	$router->put('deactivate_coupon/{coupon}', 'CouponController@deactivate_coupon');
-
-	$router->get('new_coupon/{event}', 'CouponController@new_coupon');
+	$router->post('coupon/generate_coupon', 'CouponController@store');
+	$router->get('coupon/coupons', 'CouponController@index');
+	$router->get('coupon/active_coupons', 'CouponController@active_coupons');
+	$router->put('coupon/update_coupon/{coupon}', 'CouponController@update');
+	$router->put('coupon/use_coupon/{coupon}', 'CouponController@use');
+	$router->put('coupon/deactivate_coupon/{coupon}', 'CouponController@deactivate_coupon');
 
 });

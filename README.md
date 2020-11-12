@@ -48,7 +48,7 @@ vendor\\bin\\phpunit tests
 
 ``` curl
 curl -X POST \
-  http://localhost:8000/api/create_event \
+  http://localhost:8000/api/event/create_event \
   -H 'Content-Type: application/json' \
   -d '{
         "name": "DSN Bootcamp",
@@ -60,14 +60,14 @@ curl -X POST \
 ### Get all events
 
 ``` curl
-curl -X GET http://localhost:8000/api/events
+curl -X GET http://localhost:8000/api/event/events
 ```
 
 ### Generate a coupon
 
 ``` curl
 curl -X POST \
-  http://localhost:8000/api/events \
+  http://localhost:8000/api/coupon/generate_coupon \
   -H 'Content-Type: application/json' \
   -d '{
         "code": "FK87HW",
@@ -81,20 +81,20 @@ curl -X POST \
 ### Get all coupons
 
 ``` curl
-curl -X GET http://localhost:8000/api/coupons
+curl -X GET http://localhost:8000/api/coupon/coupons
 ```
 
 ### Get active coupons
 
 ``` curl
-curl -X GET http://localhost:8000/api/active_coupons
+curl -X GET http://localhost:8000/api/coupon/active_coupons
 ```
 
 ### Update a coupon's radius
 
 ``` curl
-curl -X POST \
-  http://localhost:8000/api/update_coupon \
+curl -X PUT \
+  http://localhost:8000/api/coupon/update_coupon/:id \
   -H 'Content-Type: application/json' \
   -d '{
         "id": "1",
@@ -104,4 +104,24 @@ curl -X POST \
 
 ### Use a coupon
 
+``` curl
+curl -X PUT \
+  http://localhost:8000/api/coupon/use_coupon/:id \
+  -H 'Content-Type: application/json' \
+  -d '{
+        "id": "1",
+        "radius": "74",
+    }'
+```
+
 ### Deactivate a coupon
+
+``` curl
+curl -X PUT \
+  http://localhost:8000/api/coupon/deactivate_coupon/:id \
+  -H 'Content-Type: application/json' \
+  -d '{
+        "id": "1",
+        "radius": "74",
+    }'
+```

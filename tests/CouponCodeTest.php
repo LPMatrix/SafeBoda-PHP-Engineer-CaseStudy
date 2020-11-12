@@ -14,8 +14,8 @@ class CouponCodeTest extends TestCase
     {
         $data = factory(Event::class)->make()->toArray();
 
-        $this->json("POST", '/api/create_event', $data)->seeJson([
-            'created' => true,
+        $this->json("POST", '/api/event/create_event', $data)->seeJson([
+            'status' => true,
         ])->assertResponseStatus(201);
     }
 
@@ -24,7 +24,7 @@ class CouponCodeTest extends TestCase
     {
         $data = factory(Event::class)->make()->toArray();
 
-        $this->json("GET", '/api/events', $data)->seeJson([
+        $this->json("GET", '/api/event/events', $data)->seeJson([
             'data' => Event::all()->toArray(),
         ])->assertResponseStatus(200);
 
@@ -35,8 +35,8 @@ class CouponCodeTest extends TestCase
     {
         $data = factory(Coupon::class)->make()->toArray();
 
-        $this->json("POST", '/api/generate_coupon', $data)->seeJson([
-            'created' => true,
+        $this->json("POST", '/api/coupon/generate_coupon', $data)->seeJson([
+            'status' => true,
         ])->assertResponseStatus(201);
     }
 
@@ -45,7 +45,7 @@ class CouponCodeTest extends TestCase
     {
         $data = factory(Coupon::class)->make()->toArray();
 
-        $this->json('GET', 'api/coupons', $data)->seeJson([
+        $this->json('GET', 'api/coupon/coupons', $data)->seeJson([
             'data' => Coupon::all()->toArray(),
         ])->assertResponseStatus(200);
 
@@ -56,7 +56,7 @@ class CouponCodeTest extends TestCase
     {
         $couponModel = new Coupon;
         $activeCoupons = $couponModel->active()->get()->toArray();
-        $this->json('GET', 'api/active_coupons')->seeJson([
+        $this->json('GET', 'api/coupon/active_coupons')->seeJson([
             'data' => $activeCoupons,
         ])->assertResponseStatus(200);
 
@@ -65,8 +65,8 @@ class CouponCodeTest extends TestCase
     // test if a coupon can be used
     public function testCanUseCoupon(){
         $data = factory(Coupon::class)->create();
-        $this->json('PUT', 'api/use_coupon/'.$data->id)->seeJson([
-            'used' => true
+        $this->json('PUT', 'api/coupon/use_coupon/'.$data->id)->seeJson([
+            'status' => true
         ])->assertResponseStatus(200);
     }
 
@@ -74,8 +74,8 @@ class CouponCodeTest extends TestCase
     public function testCanDeactivateCoupon()
     {
         $data = factory(Coupon::class)->create();
-        $this->json('PUT', 'api/deactivate_coupon/'.$data->id)->seeJson([
-            'deactivated' => true
+        $this->json('PUT', 'api/coupon/deactivate_coupon/'.$data->id)->seeJson([
+            'status' => true
         ])->assertResponseStatus(200);
 
     }
@@ -84,8 +84,9 @@ class CouponCodeTest extends TestCase
     public function testCanUpdateCouponRadius()
     {
         $data = factory(Coupon::class)->create()->toArray();
-        $this->json('POST', 'api/update_coupon/', $data)->seeJson([
-            'updated' => true
+        // dd($data);
+        $this->json('PUT', 'api/coupon/update_coupon/'.$data['id'], $data)->seeJson([
+            'status' => true
         ])->assertResponseStatus(200);
 
     }
