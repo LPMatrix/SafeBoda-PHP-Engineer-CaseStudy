@@ -55,10 +55,15 @@ class CouponController extends Controller
 
     public function use($coupon){
         $coupon = Coupon::findOrFail($coupon);
-        $coupon->update(['used'=>1]);
+        $coupon->update(['used'=>'1']);
+
+        return response()->json(['data'=>$coupon, 'used'=>true], 200);
     }
 
-    public function make_coupon_inactive($count){
+    public function deactivate_coupon($coupon){
+        $coupon = Coupon::findOrFail($coupon);
+        $coupon->update(['active'=>'0']);
 
+        return response()->json(['data'=>$coupon, 'deactivated'=>true], 200);
     }
 }

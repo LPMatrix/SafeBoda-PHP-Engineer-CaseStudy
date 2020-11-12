@@ -57,21 +57,21 @@ class CouponCodeTest extends TestCase
 
     }
 
-    // public function testCanUseCoupon(){
+    public function testCanUseCoupon(){
+        $data = factory(Coupon::class)->create();
+        // dd($data);
+        $this->json('PUT', 'api/use_coupon/'.$data->id)->seeJson([
+            'used' => true
+        ])->assertResponseStatus(200);
+    }
 
-    // }
+    public function testCanDeactivateCoupon()
+    {
+        $data = factory(Coupon::class)->create();
+        // dd($data);
+        $this->json('PUT', 'api/deactivate_coupon/'.$data->id)->seeJson([
+            'deactivated' => true
+        ])->assertResponseStatus(200);
 
-    // public function testCanDeactivateCoupon()
-    // {
-    //     factory(Promocode::class, 10)->create();
-    //     $ids = Promocode::pluck('id')->all();
-    //     $updated = count($ids) ?? false;
-    //     $response = $this->json('POST', 'api/promo-codes/deactivate', ['ids' => $ids]);
-
-    //     $response
-    //         ->assertStatus(200)
-    //         ->assertJson([
-    //             'updated' => $updated,
-    //         ]);
-    // }
+    }
 }
