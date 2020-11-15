@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Http\Classes\CouponCode;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Arr;
@@ -14,14 +13,8 @@ class CouponController extends Controller
      *
      * @return void
      */
-
-    // define the coupon variable
-    protected $coupon;
-
     public function __construct()
     {
-        // instatiating the coupon class
-        $this->coupon = new CouponCode;
 
     }
 
@@ -29,10 +22,13 @@ class CouponController extends Controller
     public function store(Request $request)
     {
         $CouponModel = new Coupon;
-        $CouponModel->rules($request->all());
+        $validator = $CouponModel->rules($request->all());
+        if($validator->fails()) {
+            return response()->json(['message' => $validator->errors()->all(), 'status' => false], 400);
+        }
         
         $couponCode = $CouponModel::create([
-            'code' => $this->coupon->generateCouponString(6),
+            'code' => $CouponModel->generateCouponString(6),
             'event_id' => $request->event_id,
             'radius' => $request->radius,
             'amount' => $request->amount,
@@ -53,13 +49,6 @@ class CouponController extends Controller
         return response()->json(['data'=>$coupons], 200);
     }
 
-    public function use($coupon){
-        $coupon = Coupon::findOrFail($coupon);
-        $coupon->update(['used'=>'1']);
-
-        return response()->json(['data'=>$coupon, 'status'=>true], 200);
-    }
-
     public function deactivate_coupon($coupon){
         $coupon = Coupon::findOrFail($coupon);
         $coupon->update(['active'=>'0']);
@@ -71,5 +60,30 @@ class CouponController extends Controller
         $coupon = Coupon::findOrFail($coupon);
         $coupon->update(['radius'=>$request->radius]);
         return response()->json(['data'=>$coupon, 'status'=>true], 200);
+    }
+
+    public function verify(Request $request){
+        $CouponModel = new Coupon;
+        $latitudeFrom = $request->origin[0]; 
+        $longitudeFrom = $request->origin[1]; 
+        $latitudeTo = $request->destination[0]; 
+        $longitudeTo = $request->destination[1];
+        $coupon = $request->coupon;
+        
+        $response = $CouponModel->isValid($coupon);
+
+        if ($response) {
+            $points = [$request->origin, $request->destination];
+            $coupon = $CouponModel->getVGCD($latitudeFrom, $longitudeFrom, $latitudeTo, $longitudeTo, $coupon)->get()->toArray();
+            if (count($coupon) > 0) {
+                return response()->json(['data' => $coupon, 'polyline' => $CouponModel->getPolyline($points), 'status' => true], 200);
+            } else {
+                return response()->json(['message' => 'Coupon code is invalid','status' => false], 404);
+            }
+        
+        }else{
+            return response()->json(['message' => 'Coupon code is invalid','status' => false], 404);
+        }
+
     }
 }

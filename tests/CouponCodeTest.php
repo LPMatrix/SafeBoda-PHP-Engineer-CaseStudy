@@ -34,10 +34,17 @@ class CouponCodeTest extends TestCase
     public function testCanCreateCoupon()
     {
         $data = factory(Coupon::class)->make()->toArray();
-
-        $this->json("POST", '/api/coupon/generate_coupon', $data)->seeJson([
-            'status' => true,
+        $this->json("POST", '/api/coupon/generate_coupon', $data)->seeJsonStructure([
+            'data' => [],
         ])->assertResponseStatus(201);
+    }
+
+    // test for coupon creation error
+    public function testCreateCouponError()
+    {
+        $this->json('POST', '/api/coupon/generate_coupon', [])->seeJsonStructure([
+            'message' => [],
+        ])->assertResponseStatus(400);
     }
 
     // test if all coupons can be listed
@@ -62,20 +69,12 @@ class CouponCodeTest extends TestCase
 
     }
 
-    // test if a coupon can be used
-    public function testCanUseCoupon(){
-        $data = factory(Coupon::class)->create();
-        $this->json('PUT', 'api/coupon/use_coupon/'.$data->id)->seeJson([
-            'status' => true
-        ])->assertResponseStatus(200);
-    }
-
     // test if a coupon can be deactivated
     public function testCanDeactivateCoupon()
     {
         $data = factory(Coupon::class)->create();
         $this->json('PUT', 'api/coupon/deactivate_coupon/'.$data->id)->seeJson([
-            'status' => true
+            'status' => true,
         ])->assertResponseStatus(200);
 
     }
@@ -84,10 +83,30 @@ class CouponCodeTest extends TestCase
     public function testCanUpdateCouponRadius()
     {
         $data = factory(Coupon::class)->create()->toArray();
-        // dd($data);
         $this->json('PUT', 'api/coupon/update_coupon/'.$data['id'], $data)->seeJson([
+            'status' => true,
+        ])->assertResponseStatus(200);
+
+    }
+
+    // test if coupon can be validated
+    public function testCanValidateCoupon()
+    {
+        $data = factory(Coupon::class)->create();
+        $data = ['origin' => [9.0885365, 7.41783142], 'destination' =>[-65.975421, 180.456789], 'coupon'=> $data->code];
+        $this->json('POST', 'api/coupon/validate/', $data)->seeJson([
             'status' => true
         ])->assertResponseStatus(200);
 
     }
+
+    // test for coupon validation error
+    public function testValidateCouponError()
+    {
+        $this->json('POST', 'api/coupon/validate', [])->seeJsonStructure([
+            'message' => [],
+        ])->assertResponseStatus(404);
+    }
+
+
 }

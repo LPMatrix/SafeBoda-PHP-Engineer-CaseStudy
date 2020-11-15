@@ -64,6 +64,7 @@ curl -X GET http://localhost:8000/api/event/events
 ```
 
 ### Generate a coupon
+#### Radius is in kilometers (km)
 
 ``` curl
 curl -X POST \
@@ -91,25 +92,13 @@ curl -X GET http://localhost:8000/api/coupon/active_coupons
 ```
 
 ### Update a coupon's radius
+#### Radius is in kilometers (km)
 
 ``` curl
 curl -X PUT \
   http://localhost:8000/api/coupon/update_coupon/:id \
   -H 'Content-Type: application/json' \
   -d '{
-        "id": "1",
-        "radius": "74",
-    }'
-```
-
-### Use a coupon
-
-``` curl
-curl -X PUT \
-  http://localhost:8000/api/coupon/use_coupon/:id \
-  -H 'Content-Type: application/json' \
-  -d '{
-        "id": "1",
         "radius": "74",
     }'
 ```
@@ -122,6 +111,24 @@ curl -X PUT \
   -H 'Content-Type: application/json' \
   -d '{
         "id": "1",
-        "radius": "74",
+    }'
+```
+
+### Validate a coupon code
+
+```curl
+curl -X POST \
+  http://localhost:8000/api/coupon/validate \
+  -H 'Content-Type: application/json' \
+  -d '{
+       "code": "FK87HW",
+       "origin": [
+          -99.123456,
+          -50.098765
+       ],
+       "destination": [
+          -65.975421,
+          180.456789
+       ]
     }'
 ```

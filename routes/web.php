@@ -30,7 +30,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 	$router->get('coupon/coupons', 'CouponController@index');
 	$router->get('coupon/active_coupons', 'CouponController@active_coupons');
 	$router->put('coupon/update_coupon/{coupon}', 'CouponController@update');
-	$router->put('coupon/use_coupon/{coupon}', 'CouponController@use');
 	$router->put('coupon/deactivate_coupon/{coupon}', 'CouponController@deactivate_coupon');
+	$router->post('coupon/validate', 'CouponController@verify');
 
 });
